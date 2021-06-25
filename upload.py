@@ -21,12 +21,14 @@ path = ''
 
 url = schema + "://" + host + ":" + port + "/image?path=" + path
 
-files = [
-    ('image', open(file, 'rb'))
-]
-headers = {}
+with open(file, 'rb') as image:
+    files = [
+        ('image', image)
+    ]
+    headers = {}
 
-response = requests.request("POST", url, headers=headers, data={}, files=files)
+    response = requests.request(
+        "POST", url, headers=headers, data={}, files=files)
 
 if response.status_code != 201:
     print(response.text)
