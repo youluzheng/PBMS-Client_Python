@@ -42,7 +42,7 @@
 
 - 上传服务设定 -> Custom Command
 
-  > python your/path/upload.py
+  > python3 your/path/upload.py
 
 ## 限制
 
