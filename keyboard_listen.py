@@ -1,4 +1,3 @@
-import threading
 import keyboard
 import configparser
 import logger
