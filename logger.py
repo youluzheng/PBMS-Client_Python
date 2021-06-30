@@ -33,7 +33,7 @@ else:
     path_temp = 'logs'
 
 # 如果不是当前目录
-if path_temp != '' and path != '.':
+if path_temp != '' and path_temp != '.':
     if not os.path.exists(path_temp):
         os.makedirs(path_temp)
 
@@ -98,7 +98,7 @@ else:
 
 if level.upper() != level_temp:
     if level:
-        log.warn("level配置项无法识别" + level + "，默认设置为INFO")
+        log.warn("level配置项无法识别:" + level + "，默认设置为INFO")
     else:
         log.warn("[logger]->level配置项未找到，默认设置为INFO")
 else:
