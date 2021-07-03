@@ -1,18 +1,22 @@
+import logger
 import pyperclip
 from PIL import ImageGrab
 from PIL import Image
-import logger
-import image_tool
+from io import BytesIO
 
 log = logger.Logger("clipboard_listen")
 
 
-def read_clipBoard() -> str:
-    """ 获取粘贴板图片转换为Base64编码 """
+def read_clipBoard() -> bytes:
+    """ 获取粘贴板图片返回bytes数据， 如果图片不存在返回None """
 
     image = ImageGrab.grabclipboard()
     if isinstance(image, Image.Image):
-        return image_tool.image_to_base64(image)
+        output_buffer = BytesIO()
+        image.save(output_buffer, format='png')
+        image_date = output_buffer.getvalue()
+        output_buffer.close()
+        return image_date
     else:
         log.warn("粘贴板中未找到图片!")
 
