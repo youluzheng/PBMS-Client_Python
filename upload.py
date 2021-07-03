@@ -1,42 +1,73 @@
-import sys
-import re
+import configparser
+import logger
 import requests
+import response_transfer
 
-file = sys.argv[1]
+log = logger.Logger("request_send")
 
-# 返回类型，支持"url"和"markdown"两种类型
-ret_type = "url"
+log.info("正在初始化上传配置...")
 
-# 协议类型
-schema = "http"
+cp = configparser.ConfigParser()
+cp.read("config.ini")
 
-# 服务器ip地址
-host = "127.0.0.1"
+try:
+    options = dict(cp.items("request"))
+except configparser.NoSectionError:
+    log.error("[request]配置项未找到")
+    exit(1)
 
-# 服务器端口
-port = "9001"
+schema_list = ['http', 'https', 'HTTP', 'HTTPS']
+schema = options.get("schema")
 
-# 上传路径，如test1/test2
-path = ''
-
-url = schema + "://" + host + ":" + port + "/image?path=" + path
-
-with open(file, 'rb') as image:
-    files = [
-        ('image', image)
-    ]
-    headers = {}
-
-    response = requests.request(
-        "POST", url, headers=headers, data={}, files=files)
-
-if response.status_code != 201:
-    print(response.text)
+if schema is None:
+    log.error("[request]->schema配置项未找到")
+    exit(1)
+elif schema not in schema_list:
+    log.error("[request]->schema无法识别" + schema + '配置项')
+    exit(1)
 else:
-    if ret_type == "url":
-        ret = re.search(r"\((.*)\)", response.text)
-        print(ret.group(1))
-    elif ret_type == "markdown":
-        print(response.text)
+    log.info("初始化协议类型:" + schema)
+
+host = options.get("host")
+if host is None:
+    log.error('[request]->host配置项未找到')
+    exit(1)
+else:
+    log.info('初始化host:' + host)
+
+port = options.get("port")
+
+if port is None:
+    if schema == 'http' or schema == 'HTTP':
+        port = 80
     else:
-        print("返回类型设置错误，只支持'url'和'markdown'两种类型")
+        port = 443
+    log.warn('[request]->port配置项未找到, 初始化默认配置:' + str(port))
+else:
+    log.info('初始化端口:' + port)
+
+path = options.get("path")
+
+if path is None:
+    path = ''
+    log.info('上传路径未配置, 默认为当前目录')
+else:
+    if path == '' or path == '.':
+        log.info('初始化上传目录:当前目录')
+    else:
+        log.info('初始化上传目录:' + path)
+
+log.info('上传配置初始化完成')
+
+url = schema + "://" + host + ":" + str(port) + "/image?path=" + path
+
+
+def send(file_name, image) -> str:
+    ret = requests.post(url, files=[('image', (file_name, image))])
+    if ret.status_code == 201:
+        log.info("上传成功!")
+        log.debug(ret.text)
+        return response_transfer.transfer(ret.text)
+    else:
+        log.warn(ret.text)
+        return '上传失败, 具体信息请查看日志'
