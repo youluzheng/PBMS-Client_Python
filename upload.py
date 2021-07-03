@@ -2,6 +2,7 @@ import configparser
 import logger
 import requests
 import response_transfer
+import uuid
 
 log = logger.Logger("request_send")
 
@@ -62,7 +63,15 @@ log.info('上传配置初始化完成')
 url = schema + "://" + host + ":" + str(port) + "/image?path=" + path
 
 
-def send(file_name, image) -> str:
+def __name_generator() -> str:
+    uid = str(uuid.uuid4())
+    suid = ''.join(uid.split('-'))
+    file_name = suid + ".png"
+    return file_name
+
+
+def upload(image) -> str:
+    file_name = __name_generator()
     ret = requests.post(url, files=[('image', (file_name, image))])
     if ret.status_code == 201:
         log.info("上传成功!")

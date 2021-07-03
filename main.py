@@ -7,7 +7,7 @@ def main():
     image = clipboard_listen.read_clipBoard()
     if image is None:
         return
-    ret = upload.send('aaa.png', image)
+    ret = upload.upload(image)
     clipboard_listen.write_clipboard(ret)
 
 
