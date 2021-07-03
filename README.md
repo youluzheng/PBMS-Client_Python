@@ -12,37 +12,15 @@
 
 ```pip install -r requirements.txt```
 
-## 配置方式
-
-配置upload.py中以下项
-
-- ret_type
-  返回类型，支持`url`和`markdown`两种形式
-- schema
-  协议类型，`http`或`https`
-- host
-  服务器地址
-- port
-  服务器端口
-- path(非必填)
-  服务器存储路径，相对于图床路径
-
 ## 使用方式
 
-### typora
+### 1. 配置文件
 
-1. 菜单
-文件->偏好设置->图像
+修改config.ini配置文件
 
-2. 配置项
+### 2. 启动程序
 
-- 插入图片时 -> 上传图片
-  - [x] 对本地位置的图片应用上述规则
-  - [x] 对网络位置的图片应用上述规则
-
-- 上传服务设定 -> Custom Command
-
-  > python3 your/path/upload.py
+> python main.py
 
 ## 限制
 
