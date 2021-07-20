@@ -6,7 +6,7 @@ log = logger.Logger('response_transfer')
 
 log.info('正在初始化相应配置...')
 cp = configparser.ConfigParser()
-cp.read("config.ini")
+cp.read("config.ini", encoding="utf-8")
 
 try:
     options = dict(cp.items("response"))

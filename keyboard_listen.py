@@ -5,7 +5,7 @@ import logger
 log = logger.Logger("keyboard_listen")
 
 cp = configparser.ConfigParser()
-cp.read("config.ini")
+cp.read("config.ini", encoding="utf-8")
 
 log.info("正在初始化快捷键配置...")
 

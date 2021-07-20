@@ -9,7 +9,7 @@ log = logger.Logger("request_send")
 log.info("正在初始化上传配置...")
 
 cp = configparser.ConfigParser()
-cp.read("config.ini")
+cp.read("config.ini", encoding="utf-8")
 
 try:
     options = dict(cp.items("request"))

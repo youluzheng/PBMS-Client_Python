@@ -8,7 +8,7 @@ if not os.path.exists("config.ini"):
     exit(1)
 
 cp = configparser.ConfigParser()
-cp.read("config.ini")
+cp.read("config.ini", encoding="utf-8")
 
 is_logger_exists = True
 
