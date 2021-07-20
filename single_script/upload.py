@@ -28,7 +28,7 @@ headers = {}
 
 response = requests.request("POST", url, headers=headers, data={}, files=files)
 
-if response.status_code != 201:
+if response.status_code != 200:
     print(response.text)
 else:
     if ret_type == "url":

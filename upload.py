@@ -73,7 +73,7 @@ def __name_generator() -> str:
 def upload(image) -> str:
     file_name = __name_generator()
     ret = requests.post(url, files=[('image', (file_name, image))])
-    if ret.status_code == 201:
+    if ret.status_code == 200:
         log.info("上传成功!")
         log.debug(ret.text)
         return response_transfer.transfer(ret.text)
