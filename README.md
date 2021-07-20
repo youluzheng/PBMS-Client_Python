@@ -1,6 +1,6 @@
 # python上传脚本
 
-适配`PBMS-Server <= 0.1.0`
+适配`PBMS-Server <= 0.2.0`
 
 ## 前置条件
 
